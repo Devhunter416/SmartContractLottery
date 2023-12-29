@@ -64,3 +64,23 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+
+# Proveably Random Raffle Contracts
+
+## About
+
+
+This code is to create Proveably Random Raffle Contractsa
+
+## Objective
+1. Users can enter by paying a ticket
+    -  The ticket fees are going to go to the winner during the draw.
+2. After X period of time the winner will be decided by the lottery.
+    - And this will be done programmatically
+3. Using Chainlink VRF & Chainlink Automation
+    - Chainlink VRF -> Randomness
+    - Chainlink Automation -> Time based trigger
+
+
+
