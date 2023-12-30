@@ -83,4 +83,9 @@ This code is to create Proveably Random Raffle Contractsa
     - Chainlink Automation -> Time based trigger
 
 
-
+## Tests!
+1. Write deploy scripts
+2. write tests
+    1. work on local
+    2. forked testnet
+    3. forked mainnet
