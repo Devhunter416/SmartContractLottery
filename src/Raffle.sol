@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.19;
 
+import {VRFCoordinatorV2Interface} from "@chainlink/contracts/src/v1.8/interfaces/VRFCoordinatorV2Interface.sol";
+
 
 //@title Sample Raffle Contract
 //@author Pedro Curti
@@ -9,6 +11,9 @@ pragma solidity ^0.8.19;
 //@dev Implements Chainlink VRFv2
 
 contract Raffle {
+
+    uint256 private constant REQUEST_CONFIRMATIONS = 3;
+    uint256 private constant WORDS = 1;
 
     error Raffle__NotEnoughEthSent();
     error Raffle__NotEnoughBlocksPassed();
@@ -21,14 +26,26 @@ contract Raffle {
 
     uint256 private s_lastTimeStamp;
 
+    address private immutable i_VRFCoordinator;
+
+    bytes32 private immutable i_VRFKeyHash;
+
+    uint64 private immutable i_VRFSubId;
+
+    uint32 private immutable i_VRFGasLimit;
 
     //Events
     event EnteredRaffle(address indexed player);
 
-    constructor(uint256 entranceFee, uint256 playInterval) {
+    constructor(uint256 entranceFee, uint256 playInterval, address VRFCoordinator, bytes32 VRFKeyHash, uint64 VRFSubId, uint32 VRFGasLimit) {
         i_entranceFee = entranceFee;
         i_playInterval = playInterval;
         s_lastTimeStamp = block.timestamp;
+        i_VRFCoordinator = VRFCoordinator;
+        i_VRFKeyHash = VRFKeyHash;
+        i_VRFSubId = VRFSubId;
+        i_VRFGasLimit = VRFGasLimit;
+
     }
 
     function enterRaffle() external payable {
@@ -48,7 +65,13 @@ contract Raffle {
         }
         //pick a rand address
 
-
+        uint256 requestId = i_VRFCoordinator.requestRandomWords(
+            i_VRFKeyHash,
+            i_VRFSubId,
+            REQUEST_CONFIRMATIONS,
+            i_VRFGasLimit,
+            WORDS
+        );
 
 
         s_lastTimeStamp = block.timestamp;
