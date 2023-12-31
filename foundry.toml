@@ -2,5 +2,10 @@
 src = "src"
 out = "out"
 libs = ["lib"]
-remappings = ["@chainlink/contracts=lib/chainlink-brownie-contracts/contracts", "@src=src/", "@script=script/", "@test=test/"]
+remappings = ["@chainlink/contracts=lib/chainlink-brownie-contracts/contracts",
+                "@src=src/",
+                "@script=script/",
+                "@test=test/",
+                "@solmate=lib/solmate/src",
+                "@dev-ops=lib/foundry-devops/src"]
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

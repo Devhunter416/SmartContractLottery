@@ -9,6 +9,8 @@ import {Raffle} from "@src/Raffle.sol";
 
 import {VRFCoordinatorV2Mock} from "@chainlink/contracts/src/v0.8/mocks/VRFCoordinatorV2Mock.sol";
 
+import {LinkToken} from "@test/mocks/LinkToken.sol";
+
 contract HelperConfig is Script {
     struct NetConfig {
         uint256 entranceFee;
@@ -17,6 +19,7 @@ contract HelperConfig is Script {
                 bytes32 VRFKeyHash;
                 uint64 VRFSubId;
                 uint32 VRFGasLimit;
+                address LINK_Token;
     }
 
     NetConfig public activeNetConfig;
@@ -36,7 +39,8 @@ contract HelperConfig is Script {
             VRFCoordinator: 0x8103B0A8A00be2DDC778e6e7eaa21791Cd364625,
             VRFKeyHash: 0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c,
             VRFSubId: 8177,
-            VRFGasLimit: 500000
+            VRFGasLimit: 500000,
+            LINK_Token: 0x779877A7B0D9E8603169DdbD7836e478b4624789
         });
     }
     function getOrCreateAnvilEthConfig() public returns(NetConfig memory) {
@@ -48,6 +52,7 @@ contract HelperConfig is Script {
 
         vm.startBroadcast();
         VRFCoordinatorV2Mock VRFCoordinator = new VRFCoordinatorV2Mock(baseFee, gasPriceLink);
+        LinkToken link = new LinkToken();
         vm.stopBroadcast();
 
         return NetConfig({
@@ -56,7 +61,8 @@ contract HelperConfig is Script {
             VRFCoordinator: address(VRFCoordinator),
             VRFKeyHash: 0x474e34a077df58807dbe9c96d3c009b23b3c6d0cce433e59bbf5b34f823bc56c,
             VRFSubId: 0,
-            VRFGasLimit: 500000
+            VRFGasLimit: 500000,
+            LINK_Token: address(link)
         });
 
     }
