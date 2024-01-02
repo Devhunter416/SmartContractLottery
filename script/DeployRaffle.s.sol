@@ -22,7 +22,8 @@ contract DeployRaffle is Script {
             bytes32 VRFKeyHash,
             uint64 VRFSubId,
             uint32 VRFGasLimit,
-            address Link
+            address Link,
+            uint256 deployerKey
         ) = helperConfig.activeNetConfig();
 
         if(VRFSubId == 0) {
@@ -47,7 +48,7 @@ contract DeployRaffle is Script {
         vm.stopBroadcast();
 
         AddConsumer addConsumer = new AddConsumer();
-        addConsumer.addConsumer(VRFSubId, VRFCoordinator, address(raffle));
+        addConsumer.addConsumer(VRFSubId, VRFCoordinator, address(raffle), deployerKey);
 
         return (raffle, helperConfig);
     }

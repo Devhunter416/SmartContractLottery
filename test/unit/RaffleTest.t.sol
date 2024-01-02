@@ -32,6 +32,7 @@ contract RaffleTest is Test{
     uint64 VRFSubId;
     uint32 VRFGasLimit;
     address Link;
+    uint256 deployerKey;
 
     address public PLAYER = makeAddr("player");
     uint256 public constant STARTING_PLAYER_BALANCE = 10 ether;
@@ -46,7 +47,8 @@ contract RaffleTest is Test{
             VRFKeyHash,
             VRFSubId,
             VRFGasLimit,
-            Link
+            Link,
+            deployerKey
         ) = helperConfig.activeNetConfig();
         vm.deal(PLAYER, STARTING_PLAYER_BALANCE);
 
@@ -153,13 +155,21 @@ contract RaffleTest is Test{
         assert(uint256(state) == 1);
     }
 
-    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 randomRequestId) public raffleEnteredAndTimePassed {
+
+    modifier skipFork() {
+        if(block.chainid != 31337) {
+            return;
+        }
+        _;
+    }
+
+    function testFulfillRandomWordsCanOnlyBeCalledAfterPerformUpkeep(uint256 randomRequestId) public raffleEnteredAndTimePassed skipFork{
         vm.expectRevert("nonexistent request");
         VRFCoordinatorV2Mock(VRFCoordinator).fulfillRandomWords(randomRequestId, address(raffle));
         
     }
 
-    function testFulfillRandomWordsPicksWinnerResetsAndSendsMoney() public raffleEnteredAndTimePassed {
+    function testFulfillRandomWordsPicksWinnerResetsAndSendsMoney() public raffleEnteredAndTimePassed skipFork {
         uint256 additionalEntrants = 5;
         uint256 startingIndex = 1;
         for(uint256 i = startingIndex; i< startingIndex + additionalEntrants; i++) {

@@ -8,4 +8,5 @@ remappings = ["@chainlink/contracts=lib/chainlink-brownie-contracts/contracts",
                 "@test=test/",
                 "@solmate=lib/solmate/src",
                 "@dev-ops=lib/foundry-devops/src"]
+viaIR=true
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

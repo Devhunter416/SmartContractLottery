@@ -89,3 +89,5 @@ This code is to create Proveably Random Raffle Contractsa
     1. work on local
     2. forked testnet
     3. forked mainnet
+## TODO
+In video it fails if you dont add deployerKey to funding, but I tried now and it works perfectly, so if it fails, must add the deployerKey in FUndSUb
