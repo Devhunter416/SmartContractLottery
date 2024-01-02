@@ -18,7 +18,7 @@ contract CreateSub is Script {
 
     function createSubUsingConfig() public returns (uint64) {
         HelperConfig helper = new HelperConfig();
-        (,,address VRFCoordinator, , , , ) = helper.activeNetConfig();
+        (,,address VRFCoordinator, , , ,, ) = helper.activeNetConfig();
         return createSub(VRFCoordinator);
     }
 
@@ -44,7 +44,7 @@ contract FundSub is Script {
     function fundSubUsingConfig() public {
         
         HelperConfig helper = new HelperConfig();
-        (,,address VRFCoordinator, , uint64 subId, , address Link) = helper.activeNetConfig();
+        (,,address VRFCoordinator, , uint64 subId, , address Link,) = helper.activeNetConfig();
         fundSub(VRFCoordinator, subId, Link);
         
     }
@@ -77,16 +77,16 @@ contract AddConsumer is Script {
     function addConsumerUsingConfig(address raffle) public {
         HelperConfig helper = new HelperConfig();
         
-        (,,address VRFCoordinator , , uint64 subId, , )= helper.activeNetConfig();
+        (,,address VRFCoordinator , , uint64 subId, , , uint256 deployerKey)= helper.activeNetConfig();
 
-        addConsumer(subId, VRFCoordinator, raffle);
+        addConsumer(subId, VRFCoordinator, raffle, deployerKey);
     }
 
-    function addConsumer(uint64 subId, address VRFCoordinator, address raffle) public {
+    function addConsumer(uint64 subId, address VRFCoordinator, address raffle, uint256 deployerKey) public {
         console.log("adding consumer: ", raffle);
         console.log("Using coordinator: ", VRFCoordinator);
         console.log("On chainId: ", block.chainid);
-        vm.startBroadcast();
+        vm.startBroadcast(deployerKey);
         VRFCoordinatorV2Mock(VRFCoordinator).addConsumer(subId, raffle); 
         vm.stopBroadcast();
 
